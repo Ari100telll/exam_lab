@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(const MyApp());
@@ -48,17 +49,70 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  // int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  List buttons = [
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 0},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 1},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 2},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 3},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 4},
+    {"text": "X", "visible": false, "is_furst_button": true, "position": 5},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 6},
+    {"text": "X", "visible": true, "is_furst_button": false, "position": 7},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 8},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 9},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 10},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 11},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 12},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 13},
+    {"text": "X", "visible": false, "is_furst_button": false, "position": 14},
+  ];
+
+  // void _incrementCounter() {
+  //   setState(() {
+  //     // This call to setState tells the Flutter framework that something has
+  //     // changed in this State, which causes it to rerun the build method below
+  //     // so that the display can reflect the updated values. If we changed
+  //     // _counter without calling setState(), then the build method would not be
+  //     // called again, and so nothing would appear to happen.
+  //     _counter++;
+  //   });
+  // }
+  List _change_button_position(button) {
+    print(button);
+    var buttons_local = buttons;
+    var cnt = 0;
+    for (var btn in buttons) {
+      if (btn["visible"]) {
+        cnt++;
+      }
+    }
+    if (cnt != 15) {
+      var rnd = new Random();
+      var new_position = rnd.nextInt(15);
+      var old_pos = button["position"];
+      while (
+          new_position == old_pos || buttons_local[new_position]["visible"] == true) {
+        new_position = rnd.nextInt(15);
+      }
+    print(new_position);
+    buttons_local[new_position]["visible"]=true;
+    buttons_local[new_position]["is_furst_button"] = button["is_furst_button"];
+    buttons_local[old_pos]["visible"]=false;
+    buttons_local[new_position]["is_furst_button"] = false;
+    print(buttons_local);
+    cnt+=1;
+    if(cnt != 15 && rnd.nextInt(5)==3){
+      var new_rand_button_position = rnd.nextInt(15);
+      while (buttons[new_rand_button_position]["visible"] == true) {
+        new_rand_button_position = rnd.nextInt(15);
+      }
+      buttons_local[new_rand_button_position]["visible"]==true;
+      buttons_local[new_rand_button_position]["is_furst_button"] =false;
+    }
+    }
+    return buttons_local;
   }
 
   @override
@@ -70,46 +124,39 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      // appBar: AppBar(
+      //   title: Text(widget.title),
+      // ),
+      body: Container(
+        //  height: 200,
+        child: GridView.count(
+          // Create a grid with 2 columns. If you change the scrollDirection to
+          // horizontal, this produces 2 rows.
+          crossAxisCount: 3,
+
+          // Generate 100 widgets that display their index in the List.
+          children: buttons
+              .map(
+                (e) => e["visible"]
+                    ? Container(
+                        width: 100,
+                        child: FloatingActionButton(
+                          onPressed: () {
+                            var new_buttons = _change_button_position(e);
+                            setState(() {
+                              buttons = new_buttons;
+                            });
+                          },
+                          tooltip: 'Increment',
+                          child: Text(e["text"]),
+                        ),
+                      )
+                    : Text(" "),
+              )
+              .toList(),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
