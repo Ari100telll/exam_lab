@@ -80,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //   });
   // }
   List _change_button_position(button) {
-    print(button);
     var buttons_local = buttons;
     var cnt = 0;
     for (var btn in buttons) {
@@ -96,19 +95,18 @@ class _MyHomePageState extends State<MyHomePage> {
           new_position == old_pos || buttons_local[new_position]["visible"] == true) {
         new_position = rnd.nextInt(15);
       }
-    print(new_position);
     buttons_local[new_position]["visible"]=true;
     buttons_local[new_position]["is_furst_button"] = button["is_furst_button"];
     buttons_local[old_pos]["visible"]=false;
     buttons_local[new_position]["is_furst_button"] = false;
-    print(buttons_local);
     cnt+=1;
     if(cnt != 15 && rnd.nextInt(5)==3){
+      print(111);
       var new_rand_button_position = rnd.nextInt(15);
       while (buttons[new_rand_button_position]["visible"] == true) {
         new_rand_button_position = rnd.nextInt(15);
       }
-      buttons_local[new_rand_button_position]["visible"]==true;
+      buttons_local[new_rand_button_position]["visible"]=true;
       buttons_local[new_rand_button_position]["is_furst_button"] =false;
     }
     }
