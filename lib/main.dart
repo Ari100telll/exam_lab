@@ -95,11 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
           new_position == old_pos || buttons_local[new_position]["visible"] == true) {
         new_position = rnd.nextInt(15);
       }
-    buttons_local[new_position]["visible"]=true;
-    buttons_local[new_position]["is_furst_button"] = button["is_furst_button"];
-    buttons_local[old_pos]["visible"]=false;
-    buttons_local[new_position]["is_furst_button"] = false;
-    cnt+=1;
+      buttons_local[new_position]["visible"]=true;
+      buttons_local[new_position]["is_furst_button"] = button["is_furst_button"];
+      buttons_local[old_pos]["visible"]=false;
+      buttons_local[new_position]["is_furst_button"] = false;
     if(cnt != 15 && rnd.nextInt(5)==3){
       print(111);
       var new_rand_button_position = rnd.nextInt(15);
